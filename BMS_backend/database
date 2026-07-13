@@ -1,0 +1,14 @@
+from mysql.connector import connect
+
+try:
+    my_con=connect(host="127.0.0.1",user="root",passwd="Mangalesh@2009")
+    my_cur=my_con.cursor()
+    my_cur.execute("CREATE DATABASE IF NOT EXISTS __bank_of_paradise__")
+    my_cur.execute("USE __bank_of_paradise__")
+    admin_col="""
+    adminId VARCHAR(30) PRIMARY KEY, adminName VARCHAR(20), adminDOB DATETIME, adminDOJ DATETIME
+    """
+    my_cur.execute(f"CREATE TABLE IF NOT EXISTS admin_details({admin_col})")
+
+except Exception as e:
+    print(e)
