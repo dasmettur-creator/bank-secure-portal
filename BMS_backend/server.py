@@ -1,11 +1,18 @@
 from fastapi import FastAPI
-
+from auth import login
+from pydantic import BaseModel
 app=FastAPI()
 
-@app.get("/login/customer") #post
-def cust_login():
-    return login()
+class getinput(BaseModel):
+    log_id: str
+    pwd: str
 
-@app.get("/login/admin") #post
-def admin_login():
+@app.post("/login/customer")
+def cust_login(cust_det: getinput):
+    token = login("customer",cust_det.log_id,cust_det.pwd)
+    return "Hi customer"
+
+@app.post("/login/admin")
+def admin_login(admin_det: getinput):
+    token = login("admin",admin_det.log_id,admin_det.pwd)
     return "Hi admin"
