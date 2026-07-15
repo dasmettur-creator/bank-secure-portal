@@ -5,18 +5,18 @@ def customer_entry(usrid,usrpwd):
     response = post(
         server+"/login/customer",
         json={
-            "userid":usrid
-            "userpassword":usrpwd
+            "log_id":usrid,
+            "pwd":usrpwd
             }
         )
-        return reponse.json()
+    return response.json().get("access_token")
 
 def admin_entry(usrid,usrpwd):
     response = post(
         server+"/login/admin",
         json={
-            "userid":usrid
-            "userpassword":usrpwd
+            "log_id":usrid,
+            "pwd":usrpwd
             }
         )
-        return reponse.json()
+    return response.json().get("access_token")
