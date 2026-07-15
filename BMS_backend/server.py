@@ -10,9 +10,9 @@ class getinput(BaseModel):
 @app.post("/login/customer")
 def cust_login(cust_det: getinput):
     token = login("customer",cust_det.log_id,cust_det.pwd)
-    return "Hi customer"
+    return {"access_token":token}
 
 @app.post("/login/admin")
 def admin_login(admin_det: getinput):
     token = login("admin",admin_det.log_id,admin_det.pwd)
-    return "Hi admin"
+    return {"access_token":token}
