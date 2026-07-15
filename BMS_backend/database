@@ -1,14 +1,40 @@
 from mysql.connector import connect
 
+def check_table(level,uid,upwd):
+    my_con=connect(host="127.0.0.1",user="root",passwd="Mangalesh@2009",database='__BOP__')
+    my_cur=my_con.cursor()
+    table_name = f"{level}_details"
+    id_col = f"{level}Id"
+    pwd_col = f"{level}Pwd"
+    try:
+        query = f"SELECT * FROM {table_name} WHERE {id_col} = %s AND {pwd_col} = %s"
+        my_cur.execute(query, (uid, upwd))
+        result = my_cur.fetchone()
+        my_cur.close()
+        my_con.close()
+    except Exception:
+        return False
+    
+    if result:
+        return True, level
+    return False
+
+
 try:
     my_con=connect(host="127.0.0.1",user="root",passwd="Mangalesh@2009")
     my_cur=my_con.cursor()
-    my_cur.execute("CREATE DATABASE IF NOT EXISTS __bank_of_paradise__")
-    my_cur.execute("USE __bank_of_paradise__")
+    my_cur.execute("CREATE DATABASE IF NOT EXISTS __BOP__")
+    my_cur.execute("USE __BOP__")
     admin_col="""
-    adminId VARCHAR(30) PRIMARY KEY, adminName VARCHAR(20), adminDOB DATETIME, adminDOJ DATETIME
+    adminId VARCHAR(30) PRIMARY KEY, adminName VARCHAR(20),adminPwd VARCHAR(30), adminDOB DATETIME, adminDOJ DATETIME
     """
     my_cur.execute(f"CREATE TABLE IF NOT EXISTS admin_details({admin_col})")
 
+    cust_col="""
+    custmerId VARCHAR(30) PRIMARY KEY, customerName VARCHAR(20),customerPwd VARCHAR(30), customerDOB DATETIME
+    """
+    my_cur.execute(f"CREATE TABLE IF NOT EXISTS customer_details({cust_col})")
+
 except Exception as e:
     print(e)
+
