@@ -58,22 +58,22 @@ class BankApp(CTk):
             font=("Helvetica", 15)
         ).grid(row=1, column=0, padx=20, pady=20, sticky="e")
 
-        admid = CTkEntry(
+        self.admid = CTkEntry(
             self.admin_login,
             placeholder_text="Enter your admin id",
             width=250,
             height=40
         )
-        admid.grid(row=0, column=1, padx=20, pady=20)
+        self.admid.grid(row=0, column=1, padx=20, pady=20)
 
-        admpwd = CTkEntry(
+        self.admpwd = CTkEntry(
             self.admin_login,
             placeholder_text="Enter your admin password",
             width=250,
             height=40,
             show="*"
         )
-        admpwd.grid(row=1, column=1, padx=20, pady=20)
+        self.admpwd.grid(row=1, column=1, padx=20, pady=20)
 
         CTkButton(
             self.admin_login,
@@ -108,22 +108,22 @@ class BankApp(CTk):
             font=("Helvetica", 15)
         ).grid(row=1, column=0, padx=20, pady=20, sticky="e")
 
-        custid = CTkEntry(
+        self.custid = CTkEntry(
             self.customer_login,
             placeholder_text="Enter your customer id",
             width=250,
             height=40
         )
-        custid.grid(row=0, column=1, padx=20, pady=20)
+        self.custid.grid(row=0, column=1, padx=20, pady=20)
 
-        custpwd = CTkEntry(
+        self.custpwd = CTkEntry(
             self.customer_login,
             placeholder_text="Enter your customer password",
             width=250,
             height=40,
             show="*"
         )
-        custpwd.grid(row=1, column=1, padx=20, pady=20)
+        self.custpwd.grid(row=1, column=1, padx=20, pady=20)
 
         CTkButton(
             self.customer_login,
@@ -147,16 +147,16 @@ class BankApp(CTk):
         self.login_page()
 
     def customer_entry(self):
-        usrtid=custid.get()
-        usrpwd=custpwd.get()
+        usrid=self.custid.get()
+        usrpwd=self.custpwd.get()
         import api_client
-        api_client.customer_entry(usrid,usrpwd)
+        token=api_client.customer_entry(usrid,usrpwd)
 
     def admin_entry(self):
-        usrtid=admid.get()
-        usrpwd=admpwd.get()
+        usrid=self.admid.get()
+        usrpwd=self.admpwd.get()
         import api_client
-        api_client.admin_entry(usrid,usrpwd)
+        token=api_client.admin_entry(usrid,usrpwd)
         
     def login_page(self):
         self.login.tkraise()
