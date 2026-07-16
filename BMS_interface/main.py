@@ -1,5 +1,5 @@
 from customtkinter import *
-
+from tkinter import messagebox,  END
 class BankApp(CTk):
     set_appearance_mode("dark")
     set_default_color_theme("blue")
@@ -50,30 +50,32 @@ class BankApp(CTk):
             self.admin_login,
             text="Admin ID :",
             font=("Helvetica", 15)
-        ).grid(row=0, column=0, padx=20, pady=20, sticky="e")
+        ).grid(row=0, column=0, padx=20, pady=50, sticky="e")
 
         CTkLabel(
             self.admin_login,
             text="Admin Password :",
             font=("Helvetica", 15)
-        ).grid(row=1, column=0, padx=20, pady=20, sticky="e")
+        ).grid(row=1, column=0, padx=20, pady=50, sticky="e")
 
         self.admid = CTkEntry(
             self.admin_login,
             placeholder_text="Enter your admin id",
+            placeholder_text_color="White",
             width=250,
             height=40
         )
-        self.admid.grid(row=0, column=1, padx=20, pady=20)
+        self.admid.grid(row=0, column=1, padx=20, pady=50)
 
         self.admpwd = CTkEntry(
             self.admin_login,
             placeholder_text="Enter your admin password",
+            placeholder_text_color="White",
             width=250,
             height=40,
             show="*"
         )
-        self.admpwd.grid(row=1, column=1, padx=20, pady=20)
+        self.admpwd.grid(row=1, column=1, padx=20, pady=50)
 
         CTkButton(
             self.admin_login,
@@ -111,6 +113,7 @@ class BankApp(CTk):
         self.custid = CTkEntry(
             self.customer_login,
             placeholder_text="Enter your customer id",
+            placeholder_text_color="White",
             width=250,
             height=40
         )
@@ -119,6 +122,7 @@ class BankApp(CTk):
         self.custpwd = CTkEntry(
             self.customer_login,
             placeholder_text="Enter your customer password",
+            placeholder_text_color="White",
             width=250,
             height=40,
             show="*"
@@ -147,18 +151,53 @@ class BankApp(CTk):
         self.login_page()
 
     def customer_entry(self):
+        self.custid.delete(0, END)
+        self.custpwd.delete(0, END)
         usrid=self.custid.get()
         usrpwd=self.custpwd.get()
+        if not(usrid and usrpwd):
+            messagebox.showwarning("Invalid Format","Please enter some value.")
+            return
         import api_client
-        token=api_client.customer_entry(usrid,usrpwd)
-
+        try:
+            token=api_client.customer_entry(usrid,usrpwd)
+            if token:
+                print(token)
+            else:
+                messagebox.showwarning("Login Failed","The username or password you entered is incorrect.")
+                return
+        except Exception:
+            messagebox.showinfo("Connection Error","Unable to reach the server. Please check your internet connection or try again later.")
+            return
+        import customer_menu
+        app=customer_menu.customerMenu()
+        app.mainloop()
     def admin_entry(self):
+        self.admid.delete(0, END)
+        self.admpwd.delete(0, END)
         usrid=self.admid.get()
         usrpwd=self.admpwd.get()
         import api_client
-        token=api_client.admin_entry(usrid,usrpwd)
+        try:
+            token=api_client.admin_entry(usrid,usrpwd)
+            if token:
+                print(token)
+            else:
+                messagebox.showwarning("Login Failed","The username or password you entered is incorrect.")
+                return
+        except Exception:
+            messagebox.showinfo("Connection Error","Unable to reach the server. Please check your internet connection or try again later.")
+            return
+        import admin_menu
+        app=admin_menu.adminMenu()
+        app.mainloop()
         
     def login_page(self):
+        if self.admid.get(): self.admid.delete(0, END)
+        if self.admpwd.get(): self.admpwd.delete(0, END)
+        if self.custid.get(): self.custid.delete(0, END)
+        if self.custpwd.get(): self.custpwd.delete(0, END)
+        
         self.login.tkraise()
 
     def admin_page(self):
