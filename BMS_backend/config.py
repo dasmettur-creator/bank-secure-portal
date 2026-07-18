@@ -1,4 +1,3 @@
 HOST=""
 USER=""
 PASSWORD=""
-DATABASE="__BOP__"
