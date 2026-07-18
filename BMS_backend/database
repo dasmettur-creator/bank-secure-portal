@@ -2,7 +2,7 @@ from mysql.connector import connect
 from config import *
 
 def check_table(level,uid,upwd):
-    my_con=connect(host=HOST,user=USER,passwd=PASSWORD,database=DATABASE)
+    my_con=connect(host=HOST,user=USER,passwd=PASSWORD,database="__bop__")
     my_cur=my_con.cursor()
     table_name = f"{level}_details"
     id_col = f"{level}Id"
@@ -24,8 +24,8 @@ def check_table(level,uid,upwd):
 try:
     my_con=connect(host=HOST,user=USER,passwd=PASSWORD)
     my_cur=my_con.cursor()
-    my_cur.execute("CREATE DATABASE IF NOT EXISTS %s",(DATABASE,))
-    my_cur.execute("USE %s",(DATABASE,))
+    my_cur.execute("CREATE DATABASE IF NOT EXISTS __bop__")
+    my_cur.execute("USE __bop__")
     admin_col="""
     adminId VARCHAR(30) PRIMARY KEY, adminName VARCHAR(20),adminPwd VARCHAR(30), adminDOB DATETIME, adminDOJ DATETIME
     """
