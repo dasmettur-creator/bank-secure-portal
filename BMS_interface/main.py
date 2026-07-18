@@ -151,47 +151,77 @@ class BankApp(CTk):
         self.login_page()
 
     def customer_entry(self):
-        self.custid.delete(0, END)
-        self.custpwd.delete(0, END)
-        usrid=self.custid.get()
-        usrpwd=self.custpwd.get()
-        if not(usrid and usrpwd):
-            messagebox.showwarning("Invalid Format","Please enter some value.")
+        usrid = self.custid.get()
+        usrpwd = self.custpwd.get()
+
+        if not (usrid and usrpwd):
+            messagebox.showwarning(
+                "Invalid Format",
+                "Please enter Customer ID and Password."
+            )
             return
+
         import api_client
+
         try:
-            token=api_client.customer_entry(usrid,usrpwd)
+            token = api_client.customer_entry(usrid, usrpwd)
+
             if token:
-                print(token)
+                self.custid.delete(0, END)
+                self.custpwd.delete(0, END)
+
+                import customer_menu
+                app = customer_menu.customerMenu()
+                app.mainloop()
             else:
-                messagebox.showwarning("Login Failed","The username or password you entered is incorrect.")
+                messagebox.showwarning(
+                    "Login Failed",
+                    "The username or password you entered is incorrect."
+                )
                 return
+
         except Exception:
-            messagebox.showinfo("Connection Error","Unable to reach the server. Please check your internet connection or try again later.")
+            messagebox.showinfo(
+                "Connection Error",
+                "Unable to reach the server. Please check your internet connection or try again later."
+            )
             return
-        import customer_menu
-        app=customer_menu.customerMenu()
-        app.mainloop()
     def admin_entry(self):
-        self.admid.delete(0, END)
-        self.admpwd.delete(0, END)
-        usrid=self.admid.get()
-        usrpwd=self.admpwd.get()
-        import api_client
-        try:
-            token=api_client.admin_entry(usrid,usrpwd)
-            if token:
-                print(token)
-            else:
-                messagebox.showwarning("Login Failed","The username or password you entered is incorrect.")
-                return
-        except Exception:
-            messagebox.showinfo("Connection Error","Unable to reach the server. Please check your internet connection or try again later.")
+        usrid = self.admid.get()
+        usrpwd = self.admpwd.get()
+
+        if not (usrid and usrpwd):
+            messagebox.showwarning(
+                "Invalid Format",
+                "Please enter Admin ID and Password."
+            )
             return
-        import admin_menu
-        app=admin_menu.adminMenu()
-        app.mainloop()
-        
+
+        import api_client
+
+        try:
+            token = api_client.admin_entry(usrid, usrpwd)
+
+            if token:
+                self.admid.delete(0, END)
+                self.admpwd.delete(0, END)
+
+                import admin_menu
+                app = admin_menu.adminMenu()
+                app.mainloop()
+            else:
+                messagebox.showwarning(
+                    "Login Failed",
+                    "The username or password you entered is incorrect."
+                )
+                return
+
+        except Exception:
+            messagebox.showinfo(
+                "Connection Error",
+                "Unable to reach the server. Please check your internet connection or try again later."
+            )
+            return        
     def login_page(self):
         if self.admid.get(): self.admid.delete(0, END)
         if self.admpwd.get(): self.admpwd.delete(0, END)
